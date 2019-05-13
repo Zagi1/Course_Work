@@ -2,7 +2,6 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.*;
-import java.util.Base64;
 
 public class ConnectionDB {
 

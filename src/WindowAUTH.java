@@ -16,7 +16,7 @@ public class WindowAUTH extends JFrame {
     private JPasswordField passRegField = new JPasswordField(15);
     private JTextField loginRegField = new JTextField( 15);
 
-    private static String message, passFromWind, loginFromWind;
+    public static String message, passFromWind, loginFromWind;
 
     /*private static Socket clientSocket;
     private static BufferedReader in;
@@ -83,24 +83,24 @@ public class WindowAUTH extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
 
-                        passFromWind = passAuthField.getText();
-                        loginFromWind = loginAuthField.getText();
-                Thread thrd = new Thread(){
-                    public void run(){
+                passFromWind = passAuthField.getText();
+                loginFromWind = loginAuthField.getText();
+                //Thread thrd = new Thread(){
+                //    public void run(){
                         System.out.println("aaaa");
+                        System.out.println(loginFromWind);
+                        System.out.println(passFromWind);
                         message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
-                        }
-                    };
-                thrd.run();
-                //while (thrd.isAlive()) {
-                    //thrd.start();
-                    //String message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
-                    System.out.println("zzzz");
-                    System.out.println(message);
-                    InfoWind("Аутентификация", message);
-                    System.out.println("gtrgbd");
-                    //thrd.stop();
-                //}
+                //        }
+                //    };
+                //thrd.start();
+                //String message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
+                System.out.println("zzzz");
+                System.out.println(message);
+                InfoWind("Аутентификация", message);
+                System.out.println("gtrgbd");
+                //thrd.stop();
+
 
             }
         });

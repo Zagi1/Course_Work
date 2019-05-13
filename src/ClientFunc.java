@@ -3,11 +3,11 @@ import java.net.Socket;
 
 public class ClientFunc {
 
-    private static Socket clientSocket;
-    private static BufferedReader in;
-    private static BufferedWriter out;
-    private static String serverWord;
-    private static String message;
+    public static Socket clientSocket;
+    public static BufferedReader in;
+    public static BufferedWriter out;
+    public static String serverWord;
+    public static String message;
 
     public static String MD5(String md5) {
         try {
@@ -35,23 +35,32 @@ public class ClientFunc {
         }
     }*/
 
-    public static String TransferToSrvr(String passFromWind, String loginFromWind) {
+    public static String TransferToSrvr(String login, String password) {
+
+        Thread thrd = new Thread(){
+
+            private volatile String login;
+
+            public void setData(String login){
+                this.login = login;
+            }
+
+            //private String login, password;
+            public void run(){
 
                 try {
                     clientSocket = new Socket("localhost", 4004);
                     in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
-                    out.write(MD5(passFromWind) + "\n");
+                    out.write(MD5(password) + "\n");
                     out.flush();
                     //String serverWord = in.readLine();
                     //System.out.println(serverWord);
-                    out.write(loginFromWind + "\n");
+                    out.write(login + "\n");
                     out.flush();
-                    //String serverWord1 = in.readLine();
-                    //System.out.println(serverWord1);
                     serverWord = in.readLine();
-                    //System.out.println(serverWord);
+                    System.out.println(serverWord);
                     //in.close();
 
                     if (serverWord.equals("true")) {
@@ -68,8 +77,12 @@ public class ClientFunc {
                         Exception ex) {
                     System.out.println("Исключение: " + ex);
                 }
-
+            }
+        };
+        thrd.start();
+        System.out.println("TransferToSrvr func");
         System.out.println(message);
+        thrd.stop();
 
         return message;
 
