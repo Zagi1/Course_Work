@@ -1,4 +1,6 @@
-import java.io.IOException;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.*;
 import java.util.Base64;
 
@@ -7,6 +9,12 @@ public class ConnectionDB {
     public static Connection conn;
     public static Statement statmt;
     public static ResultSet resSetForRead, resForLog, resForPass;
+
+    private static DataInputStream in;
+    private static DataOutputStream out;
+    private static Socket clientSocket;
+    private static ServerSocket server;
+
     // --------ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ--------
     public static void Conn() throws ClassNotFoundException, SQLException {
         conn = null;
@@ -23,7 +31,7 @@ public class ConnectionDB {
     }
     // --------Заполнение таблицы--------
     public static void WriteDB(String log, String pass ) throws SQLException, IOException {
-        String strEn = MD5(pass);
+        String strEn = pass;
         statmt.execute("INSERT INTO 'users' ('login', 'password') VALUES ('" + log + "', '" + strEn + "'); ");
         System.out.println("Таблица заполнена");
     }
@@ -43,7 +51,7 @@ public class ConnectionDB {
     // --------Проверка логина--------
     public static boolean AuthLog (String login, String password) throws SQLException {
         resForLog = null;
-        String strEn = MD5(password);
+        String strEn = password;
         resForLog = statmt.executeQuery("SELECT login FROM users WHERE password = '" + strEn + "'");
         if (resForLog.next()) {
             String str2 = resForLog.getString("login");
@@ -61,7 +69,7 @@ public class ConnectionDB {
         resForPass = statmt.executeQuery("SELECT password FROM users WHERE login = '" + login + "'");
         if (resForPass.next()) {
             String str3 = resForPass.getString("password");
-            String strEn = MD5(password);
+            String strEn = password;
             if (str3.equals(strEn)) {
                 return true;
             } else {
@@ -69,6 +77,18 @@ public class ConnectionDB {
             }
         } else return false;
     }
+
+    public static String CheckData(String log, String pass) throws Exception {
+        String info;
+        if ((ConnectionDB.AuthLog(log, pass)) && (ConnectionDB.AuthPass(log, pass))) {
+            info = "true";
+        } else {
+            info = "false";
+        }
+        return info;
+    }
+
+
     // --------Закрытие--------
     public static void CloseDB() throws SQLException {
         conn.close();
@@ -78,6 +98,7 @@ public class ConnectionDB {
 
     // --------Вычисление хеша--------
 
+    /*
     public static String MD5(String md5) {
         try {
             java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
@@ -91,5 +112,5 @@ public class ConnectionDB {
             System.out.println("Исключение: " + e);
         }
         return null;
-    }
+    }*/
 }

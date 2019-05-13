@@ -4,7 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 
 public class WindowAUTH extends JFrame {
@@ -14,7 +16,32 @@ public class WindowAUTH extends JFrame {
     private JPasswordField passRegField = new JPasswordField(15);
     private JTextField loginRegField = new JTextField( 15);
 
+    private static String message, passFromWind, loginFromWind;
+
+    /*private static Socket clientSocket;
+    private static BufferedReader in;
+    private static BufferedWriter out;
+    private static String serverWord;*/
+
+    public static String MD5(String md5) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(md5.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
+            System.out.println("Исключение: " + e);
+        }
+        return null;
+    }
+
     public WindowAUTH() {
+
+        //ClientFunc.ConnectToSrvr(); //Connection to server
+
         JFrame MainWindowAuth = new JFrame("Аутентификация");
         MainWindowAuth.setLocationRelativeTo(null);
         MainWindowAuth.setSize(350, 150);
@@ -22,12 +49,8 @@ public class WindowAUTH extends JFrame {
         MainWindowAuth.setResizable(false);
         MainWindowAuth.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                try {
-                    ConnectionDB.CloseDB();
-                } catch (SQLException e1) {
-                    System.out.println("Проблема с закрытием БД: " + e1);
-                }
-                System.exit(0);
+               ClientFunc.ConnectionClose();
+               System.exit(0);
             }
         });
         JPanel contents = new JPanel();
@@ -55,19 +78,30 @@ public class WindowAUTH extends JFrame {
                 }
             }
         });
+
         enterButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String passFromWind = passAuthField.getText();
-                String loginFromWind = loginAuthField.getText();
-                try {
-                    if ((ConnectionDB.AuthLog(loginFromWind, passFromWind)) && (ConnectionDB.AuthPass(loginFromWind, passFromWind))) {
-                        InfoWind("Аутентификация пройдена", "Успешно!");
-                    } else {
-                        InfoWind("Аутентификация не пройдена", "Введенные данные некорректны");
-                    }
-                } catch (Exception ex) {
-                    System.out.println("Исключение: " + ex);
-                }
+
+
+                        passFromWind = passAuthField.getText();
+                        loginFromWind = loginAuthField.getText();
+                Thread thrd = new Thread(){
+                    public void run(){
+                        System.out.println("aaaa");
+                        message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
+                        }
+                    };
+                thrd.run();
+                //while (thrd.isAlive()) {
+                    //thrd.start();
+                    //String message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
+                    System.out.println("zzzz");
+                    System.out.println(message);
+                    InfoWind("Аутентификация", message);
+                    System.out.println("gtrgbd");
+                    //thrd.stop();
+                //}
+
             }
         });
 
