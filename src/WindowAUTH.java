@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.concurrent.Exchanger;
 
 public class WindowAUTH extends JFrame {
 
@@ -83,25 +84,18 @@ public class WindowAUTH extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
 
+
                 passFromWind = passAuthField.getText();
                 loginFromWind = loginAuthField.getText();
-                //Thread thrd = new Thread(){
-                //    public void run(){
-                        System.out.println("aaaa");
-                        System.out.println(loginFromWind);
-                        System.out.println(passFromWind);
-                        message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
-                //        }
-                //    };
-                //thrd.start();
-                //String message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
+
+                System.out.println("aaaa");
+
+                message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
+
                 System.out.println("zzzz");
                 System.out.println(message);
                 InfoWind("Аутентификация", message);
                 System.out.println("gtrgbd");
-                //thrd.stop();
-
-
             }
         });
 

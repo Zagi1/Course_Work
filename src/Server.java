@@ -31,39 +31,38 @@ public class Server {
                     //in = new DataInputStream(clientSocket.getInputStream());
                     //out = new DataOutputStream(clientSocket.getOutputStream());
 
-                    while (true) {
-                        /*
-                        password = in.readLine();
-                        System.out.println(password);
-                        login = in.readLine();
-                        System.out.println(login);
+                        while (true) {
 
-                        String inform = ConnectionDB.CheckData(login, password);
-                        System.out.println(inform);
-                        out.write(inform);
-                        out.flush();
-                        out.close();*/
+                            //while (in != null) {
 
-                        String password = in.readLine();
-                        System.out.println(password);
-                        String login = in.readLine();
-                        System.out.println(login);
+                            if (in.ready()) {
 
-                        String inform = ConnectionDB.CheckData(login, password);
-                        System.out.println(inform);
-                        System.out.println("54");
-                        out.write(inform);
-                        out.flush();
-                        //out.close();
+                                String password = in.readLine();
+                                System.out.println(password);
+                                String login = in.readLine();
+                                System.out.println(login);
 
-                        //ConnectionDB.DataToClient();
+                                String inform = ConnectionDB.CheckData(login, password);
+                                System.out.println(inform);
+                                System.out.println("54");
+                                out.write(inform + "\n");
+                                out.flush();
 
-                        if (login.equalsIgnoreCase("exit")) break;
-                    }
+                            } else {
+                                in.wait();
+                                System.out.println("kosov pidor");
+                            }
 
-                    in.close();
-                    out.close();
-                    clientSocket.close();
+                            //out.close();
+                            //ConnectionDB.DataToClient();
+
+                            //if (login.equalsIgnoreCase("exit")) break;
+                        }
+
+
+                    //in.close();
+                    //out.close();
+                    //clientSocket.close();
 
                 } catch (Exception e) {
                     System.err.println(e);

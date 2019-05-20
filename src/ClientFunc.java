@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.Exchanger;
 
 public class ClientFunc {
 
@@ -37,53 +38,39 @@ public class ClientFunc {
 
     public static String TransferToSrvr(String login, String password) {
 
-        Thread thrd = new Thread(){
+        try {
 
-            private volatile String login;
+            clientSocket = new Socket("localhost", 4004);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
-            public void setData(String login){
-                this.login = login;
-            }
-
-            //private String login, password;
-            public void run(){
-
-                try {
-                    clientSocket = new Socket("localhost", 4004);
-                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-
-                    out.write(MD5(password) + "\n");
-                    out.flush();
+            out.write(MD5(password) + "\n");
+            out.flush();
                     //String serverWord = in.readLine();
                     //System.out.println(serverWord);
-                    out.write(login + "\n");
-                    out.flush();
-                    serverWord = in.readLine();
-                    System.out.println(serverWord);
+            out.write(login + "\n");
+            out.flush();
+            serverWord = in.readLine();
+            System.out.println(serverWord);
                     //in.close();
 
-                    if (serverWord.equals("true")) {
-                        message = "Аутентификация пройдена успешно!";
-                    } else {
-                        message = "Ошибка! Проверьте введенные данные!";
-                    }
-
-                    System.out.println(message);
-
-                    clientSocket.close();
-
-                } catch (
-                        Exception ex) {
-                    System.out.println("Исключение: " + ex);
-                }
+            if (serverWord.equals("true")) {
+                message = "Аутентификация пройдена успешно!";
+            } else {
+                message = "Ошибка! Проверьте введенные данные!";
             }
-        };
-        thrd.start();
+
+            System.out.println(message);
+
+            clientSocket.close();
+
+        } catch (
+                Exception ex) {
+            System.out.println("Исключение: " + ex);
+        }
+
         System.out.println("TransferToSrvr func");
         System.out.println(message);
-        thrd.stop();
-
         return message;
 
     }
