@@ -46,13 +46,13 @@ public class ClientFunc {
 
             out.write(MD5(password) + "\n");
             out.flush();
-                    //String serverWord = in.readLine();
-                    //System.out.println(serverWord);
+            //String serverWord = in.readLine();
+            //System.out.println(serverWord);
             out.write(login + "\n");
             out.flush();
             serverWord = in.readLine();
             System.out.println(serverWord);
-                    //in.close();
+            //in.close();
 
             if (serverWord.equals("true")) {
                 message = "Аутентификация пройдена успешно!";

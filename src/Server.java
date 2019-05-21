@@ -23,50 +23,48 @@ public class Server {
             try {
                 server = new ServerSocket(4004);
                 System.out.println("Сервер запущен!");
-                clientSocket = server.accept();
+                boolean waitConnect = true;
+                while (waitConnect) {
+                    clientSocket = server.accept();
+                    try {
+                        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                        out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+                        //in = new DataInputStream(clientSocket.getInputStream());
+                        //out = new DataOutputStream(clientSocket.getOutputStream());
 
-                try {
-                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-                    //in = new DataInputStream(clientSocket.getInputStream());
-                    //out = new DataOutputStream(clientSocket.getOutputStream());
+                        boolean connect = true;
 
-                        while (true) {
+                        while (connect) {
 
-                            //while (in != null) {
+                            password = in.readLine();
+                            System.out.println(password);
+                            login = in.readLine();
+                            System.out.println(login);
+                            String inform = ConnectionDB.CheckData(login, password);
+                            System.out.println(inform);
+                            System.out.println("54");
+                            out.write(inform + "\n");
+                            out.flush();
 
-                            if (in.ready()) {
-
-                                String password = in.readLine();
-                                System.out.println(password);
-                                String login = in.readLine();
-                                System.out.println(login);
-
-                                String inform = ConnectionDB.CheckData(login, password);
-                                System.out.println(inform);
-                                System.out.println("54");
-                                out.write(inform + "\n");
-                                out.flush();
-
-                            } else {
-                                in.wait();
-                                System.out.println("kosov pidor");
+                            if ((password == null)&&(login ==null)) {
+                                connect = false;
+                                clientSocket = null;
                             }
-
-                            //out.close();
-                            //ConnectionDB.DataToClient();
-
-                            //if (login.equalsIgnoreCase("exit")) break;
                         }
 
+                        //out.close();
+                        //ConnectionDB.DataToClient();
 
-                    //in.close();
-                    //out.close();
-                    //clientSocket.close();
+                        //if (login.equalsIgnoreCase("exit")) break;
 
-                } catch (Exception e) {
-                    System.err.println(e);
-                }
+
+                        //in.close();
+                        //out.close();
+                        //clientSocket.close();
+
+                    } catch (Exception e) {
+                        System.err.println(e);
+                    }
                 /*finally {
                     System.out.println("dsada");
                     clientSocket.close();
@@ -77,6 +75,9 @@ public class Server {
                 System.out.println("Сервер закрыт!");
                 server.close();
             }*/
+
+                }
+
             } catch (Exception e) {
                 System.err.println(e);
             }
@@ -85,3 +86,4 @@ public class Server {
         }
     }
 }
+
