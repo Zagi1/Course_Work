@@ -76,6 +76,20 @@ public class ConnectionDB {
         } else return false;
     }
 
+    public static String RegLog (String login) throws SQLException {
+
+        resForPass = null;
+        resForPass = statmt.executeQuery("SELECT login FROM users WHERE login = '" + login + "'");
+        if (resForPass.next()) {
+            String str3 = resForPass.getString("login");
+            if (str3.equals(login)) {
+                return "true";
+            } else {
+                return "false";
+            }
+        } else return "false";
+    }
+
     public static String CheckData(String log, String pass) throws Exception {
         String info;
         if ((ConnectionDB.AuthLog(log, pass)) && (ConnectionDB.AuthPass(log, pass))) {

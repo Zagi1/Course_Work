@@ -48,7 +48,7 @@ public class Server {
 
                             } else if (mode.equals("Reg")) {
 
-                                String inform = ConnectionDB.CheckData(login, password);
+                                String inform = ConnectionDB.RegLog(login);
 
                                 if (inform.equals("true")) {
                                     System.out.println(inform);

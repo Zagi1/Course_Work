@@ -146,7 +146,7 @@ public class WindowAUTH extends JFrame {
     public void InfoWind (String name, String action) {
         JFrame message = new JFrame(name);
         message.setVisible(true);
-        message.setSize(350, 110);
+        message.setSize(400, 110);
         message.setLocationRelativeTo(null);
         message.setResizable(false);
         message.setLayout(new GridLayout(2,1));

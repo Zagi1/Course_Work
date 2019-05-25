@@ -78,7 +78,7 @@ public class ClientFunc {
             System.out.println(serverWord);
 
             if (serverWord.equals("true")) {
-                message = "Ошибка! Такая учетная запись уже существует!";
+                message = "Ошибка! Учетная запись с таким логином уже существует!";
             } else if (serverWord.equals("false")) {
                 message = "Учетная запись успешно добавлена!";
             }
