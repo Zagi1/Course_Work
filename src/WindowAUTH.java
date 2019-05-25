@@ -58,14 +58,18 @@ public class WindowAUTH extends JFrame {
                 String passFromWind = passAuthField.getText();
                 String loginFromWind = loginAuthField.getText();
 
-                System.out.println("aaaa");
+                if ((loginAuthField.getText().trim().length() <= 0) || (passAuthField.getText().trim().length() <= 0) ) {
+                    InfoWind ("Ошибка ввода", "Поля не должны быть пустыми");
+                } else {
+                    System.out.println("aaaa");
 
-                String message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
+                    String message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
 
-                System.out.println("zzzz");
-                System.out.println(message);
-                InfoWind("Аутентификация", message);
-                System.out.println("gtrgbd");
+                    System.out.println("zzzz");
+                    System.out.println(message);
+                    InfoWind("Аутентификация", message);
+                    System.out.println("gtrgbd");
+                }
             }
         });
 
