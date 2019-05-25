@@ -82,9 +82,10 @@ public class WindowAUTH extends JFrame {
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ConnectionDB.CloseDB();
-                } catch (SQLException e1) {
-                    System.out.println("Проблема с закрытием БД: " + e1);
+                    ClientFunc.ConnectionClose();
+                    System.exit(0);
+                } catch (Exception e1) {
+                    System.out.println("Проблема: " + e1);
                 }
                 System.exit(0);
             }
