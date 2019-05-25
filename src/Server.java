@@ -11,9 +11,6 @@ public class Server {
     private static String password;
     private static String login;
 
-    //private static DataInputStream in;
-    //private static DataOutputStream out;
-
     public static void main(String[] args) {
         try {
 
@@ -25,28 +22,48 @@ public class Server {
                 System.out.println("Сервер запущен!");
                 boolean waitConnect = true;
                 while (waitConnect) {
+
                     clientSocket = server.accept();
                     try {
                         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-                        //in = new DataInputStream(clientSocket.getInputStream());
-                        //out = new DataOutputStream(clientSocket.getOutputStream());
 
                         boolean connect = true;
 
                         while (connect) {
 
+                            String mode = in.readLine();
+                            System.out.println(mode);
                             password = in.readLine();
                             System.out.println(password);
                             login = in.readLine();
                             System.out.println(login);
-                            String inform = ConnectionDB.CheckData(login, password);
-                            System.out.println(inform);
-                            System.out.println("54");
-                            out.write(inform + "\n");
-                            out.flush();
+                            if (mode.equals("Auth")) {
 
-                            if ((password == null)&&(login ==null)) {
+                                String inform = ConnectionDB.CheckData(login, password);
+                                System.out.println(inform);
+                                System.out.println("46");
+                                out.write(inform + "\n");
+                                out.flush();
+
+                            } else if (mode.equals("Reg")) {
+
+                                String inform = ConnectionDB.CheckData(login, password);
+
+                                if (inform.equals("true")) {
+                                    System.out.println(inform);
+                                    System.out.println("63");
+                                    out.write(inform + "\n");
+                                    out.flush();
+                                } else if (inform.equals("false")) {
+                                    ConnectionDB.WriteDB(login, password);
+                                    System.out.println("72");
+                                    out.write(inform + "\n");
+                                    out.flush();
+                                }
+                            }
+
+                            if ((password == null) && (login == null)) {
                                 connect = false;
                                 clientSocket = null;
                             }
@@ -65,6 +82,8 @@ public class Server {
                     } catch (Exception e) {
                         System.err.println(e);
                     }
+
+
                 /*finally {
                     System.out.println("dsada");
                     clientSocket.close();
@@ -81,6 +100,7 @@ public class Server {
             } catch (Exception e) {
                 System.err.println(e);
             }
+
         } catch (Exception e) {
             System.err.println(e);
         }

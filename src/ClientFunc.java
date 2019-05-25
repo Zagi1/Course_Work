@@ -1,14 +1,12 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.Exchanger;
 
 public class ClientFunc {
 
-    public static Socket clientSocket;
-    public static BufferedReader in;
-    public static BufferedWriter out;
-    public static String serverWord;
-    public static String message;
+    private static Socket clientSocket;
+    private static BufferedReader in;
+    private static BufferedWriter out;
+    private static String message;
 
     public static String MD5(String md5) {
         try {
@@ -25,17 +23,6 @@ public class ClientFunc {
         return null;
     }
 
-    /*
-    public static void ConnectToSrvr() {
-        try {
-            clientSocket = new Socket("localhost", 4004);
-            in = new DataInputStream(clientSocket.getInputStream());
-            out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-        } catch (Exception exc) {
-            System.out.println(exc);
-        }
-    }*/
-
     public static String TransferToSrvr(String login, String password) {
 
         try {
@@ -44,24 +31,59 @@ public class ClientFunc {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
+            out.write("Auth" + "\n");
+            out.flush();
             out.write(MD5(password) + "\n");
             out.flush();
-            //String serverWord = in.readLine();
-            //System.out.println(serverWord);
             out.write(login + "\n");
             out.flush();
-            serverWord = in.readLine();
+            String serverWord = in.readLine();
             System.out.println(serverWord);
-            //in.close();
 
             if (serverWord.equals("true")) {
                 message = "Аутентификация пройдена успешно!";
-            } else {
+            } else if (serverWord.equals("false")) {
                 message = "Ошибка! Проверьте введенные данные!";
             }
 
             System.out.println(message);
+            clientSocket.close();
 
+        } catch (
+                Exception ex) {
+            System.out.println("Исключение: " + ex);
+        }
+
+        System.out.println("TransferToSrvr func");
+        System.out.println(message);
+        return message;
+
+    }
+
+    public static String TransferToSrvrReg(String login, String password) {
+
+        try {
+
+            clientSocket = new Socket("localhost", 4004);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+
+            out.write("Reg" + "\n");
+            out.flush();
+            out.write(MD5(password) + "\n");
+            out.flush();
+            out.write(login + "\n");
+            out.flush();
+            String serverWord = in.readLine();
+            System.out.println(serverWord);
+
+            if (serverWord.equals("true")) {
+                message = "Ошибка! Такая учетная запись уже существует!";
+            } else if (serverWord.equals("false")) {
+                message = "Учетная запись успешно добавлена!";
+            }
+
+            System.out.println(message);
             clientSocket.close();
 
         } catch (

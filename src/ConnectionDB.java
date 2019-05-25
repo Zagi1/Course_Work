@@ -30,8 +30,8 @@ public class ConnectionDB {
     }
     // --------Заполнение таблицы--------
     public static void WriteDB(String log, String pass ) throws SQLException, IOException {
-        String strEn = pass;
-        statmt.execute("INSERT INTO 'users' ('login', 'password') VALUES ('" + log + "', '" + strEn + "'); ");
+        //String strEn = pass;
+        statmt.execute("INSERT INTO 'users' ('login', 'password') VALUES ('" + log + "', '" + pass + "'); ");
         System.out.println("Таблица заполнена");
     }
     // -------- Вывод таблицы--------
@@ -50,8 +50,7 @@ public class ConnectionDB {
     // --------Проверка логина--------
     public static boolean AuthLog (String login, String password) throws SQLException {
         resForLog = null;
-        String strEn = password;
-        resForLog = statmt.executeQuery("SELECT login FROM users WHERE password = '" + strEn + "'");
+        resForLog = statmt.executeQuery("SELECT login FROM users WHERE password = '" + password + "'");
         if (resForLog.next()) {
             String str2 = resForLog.getString("login");
             if (str2.equals(login)) {
@@ -86,7 +85,6 @@ public class ConnectionDB {
         }
         return info;
     }
-
 
     // --------Закрытие--------
     public static void CloseDB() throws SQLException {

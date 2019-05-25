@@ -4,11 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.*;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.util.concurrent.Exchanger;
 
 public class WindowAUTH extends JFrame {
 
@@ -17,31 +13,7 @@ public class WindowAUTH extends JFrame {
     private JPasswordField passRegField = new JPasswordField(15);
     private JTextField loginRegField = new JTextField( 15);
 
-    public static String message, passFromWind, loginFromWind;
-
-    /*private static Socket clientSocket;
-    private static BufferedReader in;
-    private static BufferedWriter out;
-    private static String serverWord;*/
-
-    public static String MD5(String md5) {
-        try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(md5.getBytes());
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i) {
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
-            }
-            return sb.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
-            System.out.println("Исключение: " + e);
-        }
-        return null;
-    }
-
     public WindowAUTH() {
-
-        //ClientFunc.ConnectToSrvr(); //Connection to server
 
         JFrame MainWindowAuth = new JFrame("Аутентификация");
         MainWindowAuth.setLocationRelativeTo(null);
@@ -83,14 +55,12 @@ public class WindowAUTH extends JFrame {
         enterButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-
-
-                passFromWind = passAuthField.getText();
-                loginFromWind = loginAuthField.getText();
+                String passFromWind = passAuthField.getText();
+                String loginFromWind = loginAuthField.getText();
 
                 System.out.println("aaaa");
 
-                message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
+                String message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
 
                 System.out.println("zzzz");
                 System.out.println(message);
@@ -155,11 +125,15 @@ public class WindowAUTH extends JFrame {
                 if ((loginRegField.getText().trim().length() <= 0) || (passRegField.getText().trim().length() <= 0) ) {
                     InfoWind ("Ошибка ввода", "Поля не должны быть пустыми");
                 } else {
-                    try {
-                        ConnectionDB.WriteDB(loginFromWind, passFromWind);
-                    } catch (Exception ex) {
-                        System.out.println("Ошибка записи " + ex);
-                    }
+
+                    System.out.println("reg_aaa");
+
+                    String message = ClientFunc.TransferToSrvrReg(loginFromWind, passFromWind);
+
+                    System.out.println("reg_zzzz");
+                    System.out.println(message);
+                    InfoWind("Регистрация", message);
+                    System.out.println("reg_gtrgbd");
                 }
             }
         });
