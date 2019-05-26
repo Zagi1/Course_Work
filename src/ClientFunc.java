@@ -63,7 +63,6 @@ public class ClientFunc {
     public static String TransferToSrvrReg(String login, String password) {
 
         try {
-
             clientSocket = new Socket("localhost", 4004);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
@@ -82,7 +81,6 @@ public class ClientFunc {
             } else if (serverWord.equals("false")) {
                 message = "Учетная запись успешно добавлена!";
             }
-
             System.out.println(message);
             clientSocket.close();
 
@@ -90,7 +88,6 @@ public class ClientFunc {
                 Exception ex) {
             System.out.println("Исключение: " + ex);
         }
-
         System.out.println("TransferToSrvr func");
         System.out.println(message);
         return message;

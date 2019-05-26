@@ -49,7 +49,7 @@ public class ConnectionDB {
                 "Login",
                 "Password",
         };
-        String[][] data = new String[100][3];
+        String[][] data = new String[20][3];
         int i = 0;
         while(resSetForRead.next()) {
             String id = resSetForRead.getString("id");
@@ -59,11 +59,6 @@ public class ConnectionDB {
             data [i][1] = name;
             data [i][2] = password;
             i++;
-
-           /* System.out.println( "ID = " + id );
-            System.out.println( "login = " + name );
-            System.out.println( "password = " + password );
-            System.out.println();*/
         } System.out.println("Таблица выведена");
         JTable table = new JTable(data, columnNames);
         JScrollPane scrollPane = new JScrollPane(table);

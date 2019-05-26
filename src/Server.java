@@ -15,29 +15,23 @@ public class Server {
     public static void main(String[] args) {
 
         try {
-
             ConnectionDB.Conn();
             ConnectionDB.CreateDB();
-
-            try {
-                server = new ServerSocket(4004);
-                System.out.println("Сервер запущен!");
-                boolean waitConnect = true;
-                EventQueue.invokeLater(new Runnable() {
-                    public void run() {
+            server = new ServerSocket(4004);
+            System.out.println("Сервер запущен!");
+            boolean waitConnect = true;
+            EventQueue.invokeLater(new Runnable() {
+                public void run() {
                         new WindowServer();
                     }
-                });
-                while (waitConnect) {
-                    clientSocket = server.accept();
-                    try {
-                        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                        out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-
-                        boolean connect = true;
-
-                        while (connect) {
-
+            });
+            while (waitConnect) {
+                clientSocket = server.accept();
+                try {
+                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+                    boolean connect = true;
+                    while (connect) {
                             String mode = in.readLine();
                             System.out.println(mode);
                             password = in.readLine();
@@ -80,13 +74,10 @@ public class Server {
                     out.close();
                     in.close();
                 }
-
-            } catch (Exception e1) {
-                System.err.println(e1);
-            }
-        } catch (Exception ex) {
-            System.err.println(ex);
+        } catch (Exception e1) {
+            System.err.println(e1);
         }
     }
 }
+
 
