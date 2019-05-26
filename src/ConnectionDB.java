@@ -1,3 +1,7 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,7 +23,6 @@ public class ConnectionDB {
         conn = null;
         Class.forName("org.sqlite.JDBC");
         conn = DriverManager.getConnection("jdbc:sqlite:TEST6.s3db");
-
         System.out.println("База Подключена!");
     }
     // --------Создание таблицы--------
@@ -36,17 +39,43 @@ public class ConnectionDB {
     }
     // -------- Вывод таблицы--------
     public static void ReadDB() throws SQLException {
+        JFrame frame = new JFrame("Table");
+        frame.setDefaultCloseOperation(frame.HIDE_ON_CLOSE);
+
+
         resSetForRead = statmt.executeQuery("SELECT * FROM users");
+        String[] columnNames = {
+                "id",
+                "Login",
+                "Password",
+        };
+        String[][] data = new String[100][3];
+        int i = 0;
         while(resSetForRead.next()) {
-            int id = resSetForRead.getInt("id");
+            String id = resSetForRead.getString("id");
             String  name = resSetForRead.getString("login");
             String  password = resSetForRead.getString("password");
-            System.out.println( "ID = " + id );
+            data [i][0] = id;
+            data [i][1] = name;
+            data [i][2] = password;
+            i++;
+
+           /* System.out.println( "ID = " + id );
             System.out.println( "login = " + name );
             System.out.println( "password = " + password );
-            System.out.println();
+            System.out.println();*/
         } System.out.println("Таблица выведена");
+        JTable table = new JTable(data, columnNames);
+        JScrollPane scrollPane = new JScrollPane(table);
+        frame.getContentPane().add(scrollPane);
+        frame.setPreferredSize(new Dimension(450, 200));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
     }
+
+
     // --------Проверка логина--------
     public static boolean AuthLog (String login, String password) throws SQLException {
         resForLog = null;

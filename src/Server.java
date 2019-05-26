@@ -1,9 +1,9 @@
+import java.awt.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-
     private static Socket clientSocket;
     private static ServerSocket server;
     private static BufferedReader in;
@@ -11,7 +11,9 @@ public class Server {
     private static String password;
     private static String login;
 
+
     public static void main(String[] args) {
+
         try {
 
             ConnectionDB.Conn();
@@ -21,8 +23,12 @@ public class Server {
                 server = new ServerSocket(4004);
                 System.out.println("Сервер запущен!");
                 boolean waitConnect = true;
+                EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        new WindowServer();
+                    }
+                });
                 while (waitConnect) {
-
                     clientSocket = server.accept();
                     try {
                         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -62,47 +68,24 @@ public class Server {
                                     out.flush();
                                 }
                             }
-
                             if ((password == null) && (login == null)) {
                                 connect = false;
-                                clientSocket = null;
+                                clientSocket.close();
                             }
                         }
-
-                        //out.close();
-                        //ConnectionDB.DataToClient();
-
-                        //if (login.equalsIgnoreCase("exit")) break;
-
-
-                        //in.close();
-                        //out.close();
-                        //clientSocket.close();
-
-                    } catch (Exception e) {
-                        System.err.println(e);
+                    } catch (Exception q) {
+                        System.err.println(q);
                     }
-
-
-                /*finally {
-                    System.out.println("dsada");
                     clientSocket.close();
-                    in.close();
                     out.close();
-                }
-            } finally {
-                System.out.println("Сервер закрыт!");
-                server.close();
-            }*/
-
+                    in.close();
                 }
 
-            } catch (Exception e) {
-                System.err.println(e);
+            } catch (Exception e1) {
+                System.err.println(e1);
             }
-
-        } catch (Exception e) {
-            System.err.println(e);
+        } catch (Exception ex) {
+            System.err.println(ex);
         }
     }
 }

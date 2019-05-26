@@ -42,6 +42,7 @@ public class WindowAUTH extends JFrame {
         JRadioButton rb1 = new JRadioButton("Показать пароль", false);
         contents.add(rb1);
         MainWindowAuth.add(contents);
+
         rb1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (rb1.isSelected()) {
