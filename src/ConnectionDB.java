@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -134,6 +132,16 @@ public class ConnectionDB {
         conn.close();
         statmt.close();
         System.out.println("Соединения закрыты");
+    }
+
+    public static void ConnectionClose() {
+        try {
+            clientSocket.close();
+            in.close();
+            out.close();
+        } catch (Exception e1) {
+            System.out.println(e1);
+        }
     }
 
     // --------Вычисление хеша--------

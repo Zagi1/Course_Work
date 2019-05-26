@@ -4,12 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.sql.SQLException;
 
 public class WindowServer {
@@ -28,7 +22,7 @@ public class WindowServer {
         //MainWindowAuth.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         MainWindowAuth.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                ClientFunc.ConnectionClose();
+                ConnectionDB.ConnectionClose();
                 System.exit(0);
             }
         });
@@ -55,7 +49,7 @@ public class WindowServer {
 
         closeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ClientFunc.ConnectionClose();
+                ConnectionDB.ConnectionClose();
                 System.exit(0);
             }
         });
