@@ -47,7 +47,7 @@ public class ConnectionDB {
                 "Login",
                 "Password",
         };
-        String[][] data = new String[100][3];
+        String[][] data = new String[20][3];
         int i = 0;
         while(resSetForRead.next()) {
             String id = resSetForRead.getString("id");
