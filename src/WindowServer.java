@@ -54,13 +54,13 @@ public class WindowServer {
 
         closeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               try {
-                   ConnectionDB.CloseDB();
-               } catch (SQLException ex) {
-                   System.out.println("Проблема с закрытием БД" + ex);
-                   System.exit(0);
-               }
-               System.exit(0);
+                try {
+                    ConnectionDB.CloseDB();
+                } catch (SQLException ex) {
+                    System.out.println("Проблема с закрытием БД" + ex);
+                    System.exit(0);
+                }
+                System.exit(0);
             }
         });
     }
