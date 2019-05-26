@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -70,9 +68,9 @@ public class ConnectionDB {
 
     }
 
-
     // --------Проверка логина--------
-    public static boolean AuthLog (String login, String password) throws SQLException {
+
+    /*public static boolean AuthLog (String login, String password) throws SQLException {
         resForLog = null;
         resForLog = statmt.executeQuery("SELECT login FROM users WHERE password = '" + password + "'");
         if (resForLog.next()) {
@@ -83,7 +81,22 @@ public class ConnectionDB {
                 return false;
             }
         } else return false;
+    }*/
+
+    public static boolean AuthLog (String login, String password) throws SQLException {
+        resForLog = null;
+        resForLog = statmt.executeQuery("SELECT * FROM users WHERE login = '" + login + "' AND password = '" + password + "'");
+        if (resForLog.next()) {
+            String str1 = resForLog.getString("login");
+            String str2 = resForLog.getString("password");
+            if (str1.equals(login) && str2.equals(password)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else return false;
     }
+
     // --------Проверка пароля--------
     public static boolean AuthPass (String login, String password) throws SQLException {
 
@@ -116,7 +129,8 @@ public class ConnectionDB {
 
     public static String CheckData(String log, String pass) throws Exception {
         String info;
-        if ((ConnectionDB.AuthLog(log, pass)) && (ConnectionDB.AuthPass(log, pass))) {
+        //if ((ConnectionDB.AuthLog(log, pass)) && (ConnectionDB.AuthPass(log, pass))) {
+        if (ConnectionDB.AuthLog(log, pass)) {
             info = "true";
         } else {
             info = "false";
@@ -129,6 +143,16 @@ public class ConnectionDB {
         conn.close();
         statmt.close();
         System.out.println("Соединения закрыты");
+    }
+
+    public static void ConnectionClose() {
+        try {
+            clientSocket.close();
+            in.close();
+            out.close();
+        } catch (Exception e1) {
+            System.out.println(e1);
+        }
     }
 
     // --------Вычисление хеша--------
