@@ -11,12 +11,17 @@ public class WindowAUTH extends JFrame {
     private JTextField loginAuthField = new JTextField( 15);
     private JPasswordField passRegField = new JPasswordField(15);
     private JTextField loginRegField = new JTextField( 15);
+    private JPasswordField passChangeField = new JPasswordField(15);
+    private JPasswordField passChange2Field = new JPasswordField(15);
+    private JPasswordField passChangeOldField = new JPasswordField(15);
+    private JTextField loginChangeField = new JTextField( 15);
+
 
     public WindowAUTH() {
 
         JFrame MainWindowAuth = new JFrame("Аутентификация");
         MainWindowAuth.setLocationRelativeTo(null);
-        MainWindowAuth.setSize(350, 150);
+        MainWindowAuth.setSize(350, 180);
         MainWindowAuth.setVisible(true);
         MainWindowAuth.setResizable(false);
         MainWindowAuth.addWindowListener(new WindowAdapter() {
@@ -26,7 +31,7 @@ public class WindowAUTH extends JFrame {
             }
         });
         JPanel contents = new JPanel();
-        contents.setLayout(new GridLayout(4,2));
+        contents.setLayout(new GridLayout(5,2));
         contents.add(new JLabel("Логин/Login:"));
         contents.add(loginAuthField);
         contents.add(new JLabel("Пароль/Password:"));
@@ -34,13 +39,26 @@ public class WindowAUTH extends JFrame {
         passAuthField.setEchoChar('*');
         JButton enterButton = new JButton("Ввод");
         contents.add(enterButton);
-        JButton cancelButton = new JButton("Отмена");
-        contents.add(cancelButton);
-        JButton registration = new JButton("Регистрация");
-        contents.add(registration);
         JRadioButton rb1 = new JRadioButton("Показать пароль", false);
         contents.add(rb1);
+        JButton registration = new JButton("Регистрация");
+        contents.add(registration);
+        JButton changePass = new JButton("Изменить пароль");
+        contents.add(changePass);
+        Font font = new Font("Century Gothic", Font.BOLD, 14);
+        JLabel label = new JLabel("ИКТБ-88м ©");
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setFont(font);
+        contents.add(label);
+        JButton cancelButton = new JButton("Отмена");
+        contents.add(cancelButton);
         MainWindowAuth.add(contents);
+
+        changePass.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               ChangePass("Изменение пароля");
+            }
+        });
 
         rb1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -91,6 +109,73 @@ public class WindowAUTH extends JFrame {
             }
         });
     }
+
+    // --------Окно изменения пароля--------
+
+    public void ChangePass (String name) {
+        JFrame ChangePassFrame = new JFrame(name);
+        ChangePassFrame.setVisible(true);
+        ChangePassFrame.setSize(370, 180);
+        ChangePassFrame.setLocationRelativeTo(null);
+        ChangePassFrame.setResizable(false);
+        ChangePassFrame.setLayout(new GridLayout(5, 2));
+        JLabel LoginLabel = new JLabel("Логин/login:");
+        LoginLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        ChangePassFrame.add(LoginLabel);
+        ChangePassFrame.add(loginChangeField);
+        JLabel PassOldLabel = new JLabel("Старый пароль: ");
+        PassOldLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        ChangePassFrame.add(PassOldLabel);
+        ChangePassFrame.add(passChangeOldField);
+        passChangeOldField.setEchoChar('*');
+        JLabel PassLabel = new JLabel("Новый пароль: ");
+        PassLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        ChangePassFrame.add(PassLabel);
+        ChangePassFrame.add(passChangeField);
+        passChangeField.setEchoChar('*');
+        JLabel Pass2Label = new JLabel("Новый пароль повторно: ");
+        PassLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        ChangePassFrame.add(Pass2Label);
+        ChangePassFrame.add(passChange2Field);
+        passChange2Field.setEchoChar('*');
+        JRadioButton rb3 = new JRadioButton("Показать пароль", false);
+        ChangePassFrame.add(rb3);
+        JButton input = new JButton("Ввод");
+        ChangePassFrame.add(input);
+        rb3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (rb3.isSelected()) {
+                    passChangeField.setEchoChar((char) 0);
+                    passChange2Field.setEchoChar((char) 0);
+                    passChangeOldField.setEchoChar((char) 0);
+                } else {
+                    passChangeField.setEchoChar('*');
+                    passChange2Field.setEchoChar('*');
+                    passChangeOldField.setEchoChar('*');
+                }
+            }
+        });
+
+        input.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)  {
+                String passFrom2Wind = passChange2Field.getText();
+                String passFromWind = passChangeField.getText();
+                String oldPassFromWind = passChangeOldField.getText();
+                String loginFromWind = loginChangeField.getText();
+                if ((loginChangeField.getText().trim().length() <= 0) || (passChange2Field.getText().trim().length() <= 0)|| (passChangeField.getText().trim().length() <= 0) || (passChangeOldField.getText().trim().length() <= 0) ) {
+                    InfoWind ("Ошибка ввода", "Поля не должны быть пустыми");
+                } else if (passFrom2Wind.equals(passFromWind)) {
+                    //String message = ClientFunc.TransferToSrvrReg(loginFromWind, passFromWind);
+                    //ДОБАВИТЬ ОБМЕН С СЕРВЕРОМ И ИЗМЕНЕНИЕ ПАРОЛЯ В БД
+                    InfoWind("Изменение пароля", "Успешно!");
+                   // System.out.println("reg_gtrgbd");
+                } else {
+                    InfoWind ("Ошибка ввода", "Введенные пароли не совпадают");
+                }
+            }
+        });
+    }
+
 
     // --------Окно регистрации--------
     public void RegWind (String name) {

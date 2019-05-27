@@ -48,7 +48,6 @@ public class WindowServer {
                 } catch (SQLException one) {
                     System.out.println(one);
                 }
-
             }
         });
 
