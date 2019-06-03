@@ -119,14 +119,8 @@ public class WindowAUTH extends JFrame {
                         passAuthField.setText("");
                         loginAuthField.setText("");
                     } else {
-                        System.out.println("aaaa");
-
                         String message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
-
-                        System.out.println("zzzz");
-                        System.out.println(message);
                         InfoWind("Аутентификация", message);
-                        System.out.println("gtrgbd");
                         passAuthField.setText("");
                         loginAuthField.setText("");
                     }
@@ -236,7 +230,6 @@ public class WindowAUTH extends JFrame {
                 } else if (passFrom2Wind.equals(passFromWind)) {
                     String message = ClientFunc.TransferToSrvrChange(loginFromWind, passFromWind, oldPassFromWind);
                     InfoWind("Изменение пароля", message);
-                    System.out.println("change_gtrgbd");
                     passChange2Field.setText("");
                     passChangeField.setText("");
                     passChangeOldField.setText("");
@@ -300,15 +293,8 @@ public class WindowAUTH extends JFrame {
                     passRegField.setText("");
                     loginRegField.setText("");
                 } else {
-
-                    System.out.println("reg_aaa");
-
                     String message = ClientFunc.TransferToSrvrReg(loginFromWind, passFromWind);
-
-                    System.out.println("reg_zzzz");
-                    System.out.println(message);
                     InfoWind("Регистрация", message);
-                    System.out.println("reg_gtrgbd");
                     passRegField.setText("");
                     loginRegField.setText("");
                 }

@@ -1,8 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.sql.*;
 
 public class ConnectionDB {
@@ -11,36 +8,28 @@ public class ConnectionDB {
     public static Statement statmt;
     public static ResultSet resSetForRead, resForLog, resForPass;
 
-    private static DataInputStream in;
-    private static DataOutputStream out;
-    private static Socket clientSocket;
-    private static ServerSocket server;
-
     // --------ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ--------
     public static void Conn() throws ClassNotFoundException, SQLException {
         conn = null;
         Class.forName("org.sqlite.JDBC");
         conn = DriverManager.getConnection("jdbc:sqlite:TEST6.s3db");
-        System.out.println("База Подключена!");
     }
+
     // --------Создание таблицы--------
     public static void CreateDB() throws SQLException {
         statmt = conn.createStatement();
         statmt.execute("CREATE TABLE if not exists 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'login' text, 'password' text);");
-        System.out.println("Таблица создана или уже существует.");
     }
+
     // --------Заполнение таблицы--------
-    public static void WriteDB(String log, String pass ) throws SQLException, IOException {
-        //String strEn = pass;
+    public static void WriteDB(String log, String pass ) throws SQLException {
         statmt.execute("INSERT INTO 'users' ('login', 'password') VALUES ('" + log + "', '" + pass + "'); ");
-        System.out.println("Таблица заполнена");
     }
+
     // -------- Вывод таблицы--------
     public static void ReadDB() throws SQLException {
         JFrame frame = new JFrame("Table");
         frame.setDefaultCloseOperation(frame.HIDE_ON_CLOSE);
-
-
         resSetForRead = statmt.executeQuery("SELECT * FROM users");
         String[] columnNames = {
                 "id",
@@ -57,7 +46,7 @@ public class ConnectionDB {
             data [i][1] = name;
             data [i][2] = password;
             i++;
-        } System.out.println("Таблица выведена");
+        }
         JTable table = new JTable(data, columnNames);
         JScrollPane scrollPane = new JScrollPane(table);
         frame.getContentPane().add(scrollPane);
@@ -65,7 +54,6 @@ public class ConnectionDB {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
     }
 
     public static boolean AuthLog (String login, String password) throws SQLException {
@@ -82,24 +70,7 @@ public class ConnectionDB {
         } else return false;
     }
 
-    // --------Проверка пароля--------
-    public static boolean AuthPass (String login, String password) throws SQLException {
-
-        resForPass = null;
-        resForPass = statmt.executeQuery("SELECT password FROM users WHERE login = '" + login + "'");
-        if (resForPass.next()) {
-            String str3 = resForPass.getString("password");
-            String strEn = password;
-            if (str3.equals(strEn)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else return false;
-    }
-
     public static String RegLog (String login) throws SQLException {
-
         resForPass = null;
         resForPass = statmt.executeQuery("SELECT login FROM users WHERE login = '" + login + "'");
         if (resForPass.next()) {
@@ -110,7 +81,6 @@ public class ConnectionDB {
                 return "false";
             }
         } else return "false";
-
     }
 
     public static void ChangePass (String login, String password) throws SQLException {
@@ -119,7 +89,6 @@ public class ConnectionDB {
 
     public static String CheckData(String log, String pass) throws Exception {
         String info;
-        //if ((ConnectionDB.AuthLog(log, pass)) && (ConnectionDB.AuthPass(log, pass))) {
         if (ConnectionDB.AuthLog(log, pass)) {
             info = "true";
         } else {
@@ -132,16 +101,5 @@ public class ConnectionDB {
     public static void CloseDB() throws SQLException {
         conn.close();
         statmt.close();
-        System.out.println("Соединения закрыты");
-    }
-
-    public static void ConnectionClose() {
-        try {
-            clientSocket.close();
-            in.close();
-            out.close();
-        } catch (Exception e1) {
-            System.out.println(e1);
-        }
     }
 }

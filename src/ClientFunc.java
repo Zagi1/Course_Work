@@ -26,7 +26,6 @@ public class ClientFunc {
     public static String TransferToSrvr(String login, String password) {
 
         try {
-
             clientSocket = new Socket("localhost", 4004);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
@@ -38,26 +37,18 @@ public class ClientFunc {
             out.write(login + "\n");
             out.flush();
             String serverWord = in.readLine();
-            System.out.println(serverWord);
-
             if (serverWord.equals("true")) {
                 message = "Аутентификация пройдена успешно!";
             } else if (serverWord.equals("false")) {
                 message = "Ошибка! Проверьте введенные данные!";
             }
-
-            System.out.println(message);
             clientSocket.close();
 
         } catch (
                 Exception ex) {
             System.out.println("Исключение: " + ex);
         }
-
-        System.out.println("TransferToSrvr func");
-        System.out.println(message);
         return message;
-
     }
 
     public static String TransferToSrvrReg(String login, String password) {
@@ -74,24 +65,16 @@ public class ClientFunc {
             out.write(login + "\n");
             out.flush();
             String serverWord = in.readLine();
-            System.out.println(serverWord);
-
             if (serverWord.equals("true")) {
                 message = "Ошибка! Учетная запись с таким логином уже существует!";
             } else if (serverWord.equals("false")) {
                 message = "Учетная запись успешно добавлена!";
             }
-            System.out.println(message);
             clientSocket.close();
-
-        } catch (
-                Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Исключение: " + ex);
         }
-        System.out.println("TransferToSrvr func");
-        System.out.println(message);
         return message;
-
     }
 
     public static String TransferToSrvrChange(String login, String password, String oldpassword) {
@@ -110,22 +93,15 @@ public class ClientFunc {
             out.write(login + "\n");
             out.flush();
             String serverWord = in.readLine();
-            System.out.println(serverWord);
-
             if (serverWord.equals("true")) {
                 message = "Успешная смена пароля!";
             } else if (serverWord.equals("false")) {
                 message = "Ошибка! Проверьте введенные данные учетной записи.";
             }
-            System.out.println(message);
             clientSocket.close();
-
-        } catch (
-                Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Исключение: " + ex);
         }
-        System.out.println("TransferToSrvrChange func");
-        System.out.println(message);
         return message;
     }
 
@@ -138,5 +114,4 @@ public class ClientFunc {
             System.out.println(e1);
         }
     }
-
 }
