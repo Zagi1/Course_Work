@@ -94,6 +94,41 @@ public class ClientFunc {
 
     }
 
+    public static String TransferToSrvrChange(String login, String password, String oldpassword) {
+
+        try {
+            clientSocket = new Socket("localhost", 4004);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+
+            out.write("Change" + "\n");
+            out.flush();
+            out.write(MD5(password) + "\n");
+            out.flush();
+            out.write(MD5(oldpassword) + "\n");
+            out.flush();
+            out.write(login + "\n");
+            out.flush();
+            String serverWord = in.readLine();
+            System.out.println(serverWord);
+
+            if (serverWord.equals("true")) {
+                message = "Успешная смена пароля!";
+            } else if (serverWord.equals("false")) {
+                message = "Ошибка! Проверьте введенные данные учетной записи.";
+            }
+            System.out.println(message);
+            clientSocket.close();
+
+        } catch (
+                Exception ex) {
+            System.out.println("Исключение: " + ex);
+        }
+        System.out.println("TransferToSrvrChange func");
+        System.out.println(message);
+        return message;
+    }
+
     public static void ConnectionClose() {
         try {
             clientSocket.close();

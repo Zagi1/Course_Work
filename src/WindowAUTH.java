@@ -162,13 +162,13 @@ public class WindowAUTH extends JFrame {
                 String passFromWind = passChangeField.getText();
                 String oldPassFromWind = passChangeOldField.getText();
                 String loginFromWind = loginChangeField.getText();
+
                 if ((loginChangeField.getText().trim().length() <= 0) || (passChange2Field.getText().trim().length() <= 0)|| (passChangeField.getText().trim().length() <= 0) || (passChangeOldField.getText().trim().length() <= 0) ) {
                     InfoWind ("Ошибка ввода", "Поля не должны быть пустыми");
                 } else if (passFrom2Wind.equals(passFromWind)) {
-                    //String message = ClientFunc.TransferToSrvrReg(loginFromWind, passFromWind);
-                    //ДОБАВИТЬ ОБМЕН С СЕРВЕРОМ И ИЗМЕНЕНИЕ ПАРОЛЯ В БД
-                    InfoWind("Изменение пароля", "Успешно!");
-                   // System.out.println("reg_gtrgbd");
+                    String message = ClientFunc.TransferToSrvrChange(loginFromWind, passFromWind, oldPassFromWind);
+                    InfoWind("Изменение пароля", message);
+                    System.out.println("change_gtrgbd");
                 } else {
                     InfoWind ("Ошибка ввода", "Введенные пароли не совпадают");
                 }

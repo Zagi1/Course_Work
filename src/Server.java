@@ -8,7 +8,7 @@ public class Server {
     private static ServerSocket server;
     private static BufferedReader in;
     private static BufferedWriter out;
-    private static String password;
+    private static String password, oldpassword;
     private static String login;
 
 
@@ -36,13 +36,16 @@ public class Server {
                             System.out.println(mode);
                             password = in.readLine();
                             System.out.println(password);
+                            if (mode.equals("Change")) {
+                                oldpassword = in.readLine();
+                                System.out.println(oldpassword);
+                            }
                             login = in.readLine();
                             System.out.println(login);
                             if (mode.equals("Auth")) {
-
                                 String inform = ConnectionDB.CheckData(login, password);
                                 System.out.println(inform);
-                                System.out.println("46");
+                                System.out.println("47");
                                 out.write(inform + "\n");
                                 out.flush();
 
@@ -57,8 +60,22 @@ public class Server {
                                     out.flush();
                                 } else if (inform.equals("false")) {
                                     ConnectionDB.WriteDB(login, password);
-                                    System.out.println("72");
+                                    System.out.println("62");
                                     out.write(inform + "\n");
+                                    out.flush();
+                                }
+                            } else if (mode.equals("Change")){
+
+                                String informChange = ConnectionDB.CheckData(login, oldpassword);
+
+                                if (informChange.equals("true")) {
+                                    ConnectionDB.ChangePass(login, password);
+                                    System.out.println("72");
+                                    out.write(informChange + "\n");
+                                    out.flush();
+                                } else if (informChange.equals("false")) {
+                                    System.out.println("76");
+                                    out.write(informChange + "\n");
                                     out.flush();
                                 }
                             }

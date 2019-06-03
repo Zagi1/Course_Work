@@ -125,6 +125,11 @@ public class ConnectionDB {
                 return "false";
             }
         } else return "false";
+
+    }
+
+    public static void ChangePass (String login, String password) throws SQLException {
+        statmt.execute("UPDATE users SET password = '" + password + "' WHERE login = '" + login + "'");
     }
 
     public static String CheckData(String log, String pass) throws Exception {
