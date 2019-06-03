@@ -15,7 +15,8 @@ public class WindowAUTH extends JFrame {
     private JPasswordField passChange2Field = new JPasswordField(15);
     private JPasswordField passChangeOldField = new JPasswordField(15);
     private JTextField loginChangeField = new JTextField( 15);
-
+    private String [] countLogin = new String[3];
+    private int count;
 
     public WindowAUTH() {
 
@@ -76,32 +77,57 @@ public class WindowAUTH extends JFrame {
                 String passFromWind = passAuthField.getText();
                 String loginFromWind = loginAuthField.getText();
 
-                if ((loginAuthField.getText().trim().length() <= 0) || (passAuthField.getText().trim().length() <= 0) ) {
-                    InfoWind ("Ошибка ввода", "Поля не должны быть пустыми");
-                } else if (loginFromWind.contains("'")
-                        ||loginFromWind.contains("%")
-                        ||loginFromWind.contains(",")
-                        ||loginFromWind.contains("=")
-                        ||loginFromWind.contains(";")
-                        ||passFromWind.contains("'")
-                        ||passFromWind.contains(",")
-                        ||passFromWind.contains("=")
-                        ||passFromWind.contains(";")
-                        ||passFromWind.contains("%")) {
-                    InfoWind("Ошибка ввода", "Введены недопустимые символы");
-                    passAuthField.setText("");
-                    loginAuthField.setText("");
+                if (count <= 2) {
+                    countLogin[count] = loginFromWind;
+                    count++;
                 } else {
-                    System.out.println("aaaa");
+                    count = 0;
+                    countLogin[count] = loginFromWind;
+                    countLogin[1] = null;
+                    countLogin[2] = null;
+                    count++;
+                }
 
-                    String message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
+                if ((countLogin[0].equals(countLogin[1])) && (countLogin[0].equals(countLogin[2]))) {
+                    InfoWind("Хватит подбирать", "Остановись!");
+                    enterButton.setEnabled(false);
+                    Timer t = new Timer(5000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            enterButton.setEnabled(true);
+                        }
+                    });
+                    t.setRepeats(false);
+                    t.start();
 
-                    System.out.println("zzzz");
-                    System.out.println(message);
-                    InfoWind("Аутентификация", message);
-                    System.out.println("gtrgbd");
-                    passAuthField.setText("");
-                    loginAuthField.setText("");
+                } else {
+                    if ((loginAuthField.getText().trim().length() <= 0) || (passAuthField.getText().trim().length() <= 0)) {
+                        InfoWind("Ошибка ввода", "Поля не должны быть пустыми");
+                    } else if (loginFromWind.contains("'")
+                            || loginFromWind.contains("%")
+                            || loginFromWind.contains(",")
+                            || loginFromWind.contains("=")
+                            || loginFromWind.contains(";")
+                            || passFromWind.contains("'")
+                            || passFromWind.contains(",")
+                            || passFromWind.contains("=")
+                            || passFromWind.contains(";")
+                            || passFromWind.contains("%")) {
+                        InfoWind("Ошибка ввода", "Введены недопустимые символы");
+                        passAuthField.setText("");
+                        loginAuthField.setText("");
+                    } else {
+                        System.out.println("aaaa");
+
+                        String message = ClientFunc.TransferToSrvr(loginFromWind, passFromWind);
+
+                        System.out.println("zzzz");
+                        System.out.println(message);
+                        InfoWind("Аутентификация", message);
+                        System.out.println("gtrgbd");
+                        passAuthField.setText("");
+                        loginAuthField.setText("");
+                    }
                 }
             }
         });

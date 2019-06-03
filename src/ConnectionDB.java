@@ -68,21 +68,6 @@ public class ConnectionDB {
 
     }
 
-    // --------Проверка логина--------
-
-    /*public static boolean AuthLog (String login, String password) throws SQLException {
-        resForLog = null;
-        resForLog = statmt.executeQuery("SELECT login FROM users WHERE password = '" + password + "'");
-        if (resForLog.next()) {
-            String str2 = resForLog.getString("login");
-            if (str2.equals(login)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else return false;
-    }*/
-
     public static boolean AuthLog (String login, String password) throws SQLException {
         resForLog = null;
         resForLog = statmt.executeQuery("SELECT * FROM users WHERE login = '" + login + "' AND password = '" + password + "'");
@@ -159,22 +144,4 @@ public class ConnectionDB {
             System.out.println(e1);
         }
     }
-
-    // --------Вычисление хеша--------
-
-    /*
-    public static String MD5(String md5) {
-        try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(md5.getBytes());
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i) {
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
-            }
-            return sb.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
-            System.out.println("Исключение: " + e);
-        }
-        return null;
-    }*/
 }
