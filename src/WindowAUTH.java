@@ -89,6 +89,8 @@ public class WindowAUTH extends JFrame {
                         ||passFromWind.contains(";")
                         ||passFromWind.contains("%")) {
                     InfoWind("Ошибка ввода", "Введены недопустимые символы");
+                    passAuthField.setText("");
+                    loginAuthField.setText("");
                 } else {
                     System.out.println("aaaa");
 
@@ -199,6 +201,10 @@ public class WindowAUTH extends JFrame {
                         ||oldPassFromWind.contains(";")
                         ||oldPassFromWind.contains("%")) {
                     InfoWind("Ошибка ввода", "Введены недопустимые символы");
+                    passChange2Field.setText("");
+                    passChangeField.setText("");
+                    passChangeOldField.setText("");
+                    loginChangeField.setText("");
                 } else if (passFrom2Wind.equals(passFromWind)) {
                     String message = ClientFunc.TransferToSrvrChange(loginFromWind, passFromWind, oldPassFromWind);
                     InfoWind("Изменение пароля", message);
@@ -263,6 +269,8 @@ public class WindowAUTH extends JFrame {
                         ||passFromWind.contains(";")
                         ||passFromWind.contains("%")) {
                     InfoWind("Ошибка ввода", "Введены недопустимые символы");
+                    passRegField.setText("");
+                    loginRegField.setText("");
                 } else {
 
                     System.out.println("reg_aaa");
