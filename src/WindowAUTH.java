@@ -91,6 +91,8 @@ public class WindowAUTH extends JFrame {
                 if ((countLogin[0].equals(countLogin[1])) && (countLogin[0].equals(countLogin[2]))) {
                     InfoWind("Хватит подбирать", "Остановись!");
                     enterButton.setEnabled(false);
+                    passAuthField.setText("");
+                    loginAuthField.setText("");
                     Timer t = new Timer(5000, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
